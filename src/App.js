@@ -25,6 +25,7 @@ const App = () => {
 
   const calculateProxy = (e, btn) => {
     e.preventDefault();
+
     const value = e.target.innerHTML;
 
     switch (btn) {

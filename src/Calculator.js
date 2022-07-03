@@ -97,6 +97,7 @@ export default class Calculator {
 
   removeSpaces = (num) => num.toString().replace(/\s/g, "");
 
+  // return await axios.get("calc");
   math = (a, b, sign) =>
     sign === "+" ? a + b : sign === "-" ? a - b : sign === "X" ? a * b : a / b;
 }
