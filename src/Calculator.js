@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export default class Calculator {
   numClickHandler = (calc, value) => {
     if (this.removeSpaces(calc.num).length < 16) {
@@ -6,11 +8,28 @@ export default class Calculator {
         num:
           this.removeSpaces(calc.num) % 1 === 0 &&
           !calc.num.toString().includes(".")
-            ? this.toLocaleString(Number(this.removeSpaces(calc.num + value)))
-            : this.toLocaleString(calc.num + value),
+            ? Number(this.removeSpaces(calc.num + value))
+            : calc.num + value,
         res: !calc.sign ? 0 : calc.res,
       };
     }
+  };
+
+  signClickHandler = async (calc, value) => {
+    return {
+      ...calc,
+      sign: value,
+      res: !calc.num
+        ? calc.res
+        : !calc.res
+        ? calc.num
+        : await this.math(
+            Number(this.removeSpaces(calc.res)),
+            Number(this.removeSpaces(calc.num)),
+            calc.sign
+          ),
+      num: 0,
+    };
   };
 
   comaClickHandler = (calc, value) => {
@@ -20,38 +39,17 @@ export default class Calculator {
     };
   };
 
-  signClickHandler = (calc, value) => {
-    return {
-      ...calc,
-      sign: value,
-      res: !calc.num
-        ? calc.res
-        : !calc.res
-        ? calc.num
-        : this.toLocaleString(
-            this.math(
-              Number(this.removeSpaces(calc.res)),
-              Number(this.removeSpaces(calc.num)),
-              calc.sign
-            )
-          ),
-      num: 0,
-    };
-  };
-
-  equalsClickHandler = (calc) => {
+  equalsClickHandler = async (calc) => {
     if (calc.sign && calc.num) {
       return {
         ...calc,
         res:
           calc.num === "0" && calc.sign === "/"
             ? "Can't divide with 0"
-            : this.toLocaleString(
-                this.math(
-                  Number(this.removeSpaces(calc.res)),
-                  Number(this.removeSpaces(calc.num)),
-                  calc.sign
-                )
+            : await this.math(
+                Number(this.removeSpaces(calc.res)),
+                Number(this.removeSpaces(calc.num)),
+                calc.sign
               ),
         sign: "",
         num: 0,
@@ -66,8 +64,8 @@ export default class Calculator {
   invertClickHandler = (calc) => {
     return {
       ...calc,
-      num: calc.num ? this.toLocaleString(this.removeSpaces(calc.num) * -1) : 0,
-      res: calc.res ? this.toLocaleString(this.removeSpaces(calc.res) * -1) : 0,
+      num: calc.num ? this.removeSpaces(calc.num) * -1 : 0,
+      res: calc.res ? this.removeSpaces(calc.res) * -1 : 0,
       sign: "",
     };
   };
@@ -92,12 +90,26 @@ export default class Calculator {
     };
   };
 
-  toLocaleString = (num) =>
-    String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
-
   removeSpaces = (num) => num.toString().replace(/\s/g, "");
 
   // return await axios.get("calc");
-  math = (a, b, sign) =>
-    sign === "+" ? a + b : sign === "-" ? a - b : sign === "X" ? a * b : a / b;
+  math = async (a, b, sign) => {
+    return sign === "+"
+      ? a + b
+      : sign === "-"
+      ? a - b
+      : sign === "X"
+      ? a * b
+      : a / b;
+    // return (await axios.get("http://localhost:3001/calc")).data;
+  };
+
+  mathOnRemote = async (a, b, sign) => {
+    const data = {
+      a,
+      b,
+      sign,
+    };
+    return (await axios.post("http://localhost:3001/calc", data)).data;
+  };
 }

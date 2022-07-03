@@ -23,7 +23,7 @@ const App = () => {
     res: 0,
   });
 
-  const calculateProxy = (e, btn) => {
+  const calculateProxy = async (e, btn) => {
     e.preventDefault();
 
     const value = e.target.innerHTML;
@@ -41,11 +41,11 @@ const App = () => {
       case "X":
       case "-":
       case "+":
-        return calculator.signClickHandler(calc, value);
+        return await calculator.signClickHandler(calc, value);
       case ".":
         return calculator.comaClickHandler(calc, value);
       default:
-        return calculator.numClickHandler(calc, value);
+        return await calculator.numClickHandler(calc, value);
     }
   };
 
@@ -59,7 +59,7 @@ const App = () => {
               key={i}
               className={btn === "=" ? "equals" : ""}
               value={btn}
-              onClick={(e) => setCalc(calculateProxy(e, btn))}
+              onClick={async (e) => setCalc(await calculateProxy(e, btn))}
             />
           );
         })}

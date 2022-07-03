@@ -1,34 +1,20 @@
 import { rest } from "msw";
 
 export const handlers = [
-  rest.get("/calc", (req, res, ctx) => {
-    ctx.body = 200;
-    return res(
-      // Respond with a 200 status code
-      ctx.status(200)
-    );
+  rest.post("http://localhost:3001/calc", (req, res, ctx) => {
+    return res(ctx.status(200), ctx.body("100"));
   }),
 
-  rest.get("/user", (req, res, ctx) => {
-    // Check if the user is authenticated in this session
-    const isAuthenticated = sessionStorage.getItem("is-authenticated");
-
-    if (!isAuthenticated) {
-      // If not authenticated, respond with a 403 error
-      return res(
-        ctx.status(403),
-        ctx.json({
-          errorMessage: "Not authorized",
-        })
-      );
-    }
-
-    // If authenticated, return a mocked user details
+  rest.get("http://localhost:3001/records", (req, res, ctx) => {
     return res(
       ctx.status(200),
-      ctx.json({
-        username: "admin",
-      })
+      ctx.json([
+        {
+          time: "2021-08-10T10:00:00Z",
+          expression: "30+1",
+          result: "31",
+        },
+      ])
     );
   }),
 ];
