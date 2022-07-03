@@ -5,12 +5,8 @@ export default class Calculator {
     if (this.removeSpaces(calc.num).length < 16) {
       return {
         ...calc,
-        num:
-          this.removeSpaces(calc.num) % 1 === 0 &&
-          !calc.num.toString().includes(".")
-            ? Number(this.removeSpaces(calc.num + value))
-            : calc.num + value,
-        res: !calc.sign ? 0 : calc.res,
+        num: calc.num.toString() + value.toString(),
+        res: value,
       };
     }
   };
@@ -19,15 +15,7 @@ export default class Calculator {
     return {
       ...calc,
       sign: value,
-      res: !calc.num
-        ? calc.res
-        : !calc.res
-        ? calc.num
-        : await this.math(
-            Number(this.removeSpaces(calc.res)),
-            Number(this.removeSpaces(calc.num)),
-            calc.sign
-          ),
+      res: 0,
       num: 0,
     };
   };
@@ -35,37 +23,24 @@ export default class Calculator {
   comaClickHandler = (calc, value) => {
     return {
       ...calc,
-      num: !calc.num.toString().includes(".") ? calc.num + value : calc.num,
+      num: 0,
     };
   };
 
   equalsClickHandler = async (calc) => {
-    if (calc.sign && calc.num) {
-      return {
-        ...calc,
-        res:
-          calc.num === "0" && calc.sign === "/"
-            ? "Can't divide with 0"
-            : await this.math(
-                Number(this.removeSpaces(calc.res)),
-                Number(this.removeSpaces(calc.num)),
-                calc.sign
-              ),
-        sign: "",
-        num: 0,
-      };
-    }
-
     return {
       ...calc,
+      res: 0,
+      sign: "",
+      num: 0,
     };
   };
 
   invertClickHandler = (calc) => {
     return {
       ...calc,
-      num: calc.num ? this.removeSpaces(calc.num) * -1 : 0,
-      res: calc.res ? this.removeSpaces(calc.res) * -1 : 0,
+      num: 0,
+      res: 0,
       sign: "",
     };
   };
@@ -91,18 +66,6 @@ export default class Calculator {
   };
 
   removeSpaces = (num) => num.toString().replace(/\s/g, "");
-
-  // return await axios.get("calc");
-  math = async (a, b, sign) => {
-    return sign === "+"
-      ? a + b
-      : sign === "-"
-      ? a - b
-      : sign === "X"
-      ? a * b
-      : a / b;
-    // return (await axios.get("http://localhost:3001/calc")).data;
-  };
 
   mathOnRemote = async (a, b, sign) => {
     const data = {
