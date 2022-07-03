@@ -5,6 +5,7 @@ import Screen from "./components/Screen";
 import ButtonBox from "./components/ButtonBox";
 import Button from "./components/Button";
 import Calculator from "./Calculator";
+import PaperDialog from "./components/PaperDialog";
 
 const btnValues = [
   ["C", "+-", "%", "/"],
@@ -23,6 +24,16 @@ const App = () => {
     res: 0,
   });
 
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setDialogOpen(false);
+  };
+
   const calculateProxy = async (e, btn) => {
     e.preventDefault();
 
@@ -30,6 +41,7 @@ const App = () => {
 
     switch (btn) {
       case "C":
+        handleOpen();
         return calculator.resetClickHandler(calc);
       case "+-":
         return calculator.invertClickHandler(calc);
@@ -50,21 +62,24 @@ const App = () => {
   };
 
   return (
-    <Wrapper>
-      <Screen value={calc.num ? calc.num : calc.res} />
-      <ButtonBox>
-        {btnValues.flat().map((btn, i) => {
-          return (
-            <Button
-              key={i}
-              className={btn === "=" ? "equals" : ""}
-              value={btn}
-              onClick={async (e) => setCalc(await calculateProxy(e, btn))}
-            />
-          );
-        })}
-      </ButtonBox>
-    </Wrapper>
+    <div>
+      <PaperDialog dialogOpen={dialogOpen} handleClose={handleClose} />
+      <Wrapper>
+        <Screen value={calc.num ? calc.num : calc.res} />
+        <ButtonBox>
+          {btnValues.flat().map((btn, i) => {
+            return (
+              <Button
+                key={i}
+                className={btn === "=" ? "equals" : ""}
+                value={btn}
+                onClick={async (e) => setCalc(await calculateProxy(e, btn))}
+              />
+            );
+          })}
+        </ButtonBox>
+      </Wrapper>
+    </div>
   );
 };
 
