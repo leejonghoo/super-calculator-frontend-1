@@ -2,7 +2,7 @@ import { rest } from 'msw';
 
 export const handlers = [
   rest.post('http://localhost:3001/calc', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ result: '1' }));
+    return res(ctx.status(200), ctx.json({ result: '100' }));
   }),
 
   rest.get('http://localhost:3001/records', (req, res, ctx) => {

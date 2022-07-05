@@ -62,7 +62,6 @@ const App = () => {
   };
 
   return (
-<<<<<<< HEAD
     <div>
       <PaperDialog dialogOpen={dialogOpen} handleClose={handleClose} />
       <Wrapper>
@@ -81,26 +80,6 @@ const App = () => {
         </ButtonBox>
       </Wrapper>
     </div>
-=======
-    <Wrapper>
-      <Screen value={calc.num ? calc.num : calc.res} />
-      <ButtonBox>
-        {btnValues.flat().map((btn, i) => {
-          return (
-            <Button
-              key={i}
-              className={btn === "=" ? "equals" : ""}
-              value={btn}
-              onClick={async (e) => {
-                const res = await calculateProxy(e, btn);
-                setCalc(res);
-              }}
-            />
-          );
-        })}
-      </ButtonBox>
-    </Wrapper>
->>>>>>> develop
   );
 };
 

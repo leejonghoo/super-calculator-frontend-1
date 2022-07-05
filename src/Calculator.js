@@ -28,9 +28,15 @@ export default class Calculator {
   };
 
   equalsClickHandler = async (calc) => {
+    const res = await this.mathOnRemote(
+      Number(calc.res),
+      Number(calc.num),
+      calc.sign,
+    );
+
     return {
       ...calc,
-      res: 0,
+      res: res,
       sign: '',
       num: 0,
     };
