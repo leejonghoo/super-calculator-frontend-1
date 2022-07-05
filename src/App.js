@@ -1,25 +1,25 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import Wrapper from "./components/Wrapper";
-import Screen from "./components/Screen";
-import ButtonBox from "./components/ButtonBox";
-import Button from "./components/Button";
-import Calculator from "./Calculator";
-import PaperDialog from "./components/PaperDialog";
+import Wrapper from './components/Wrapper';
+import Screen from './components/Screen';
+import ButtonBox from './components/ButtonBox';
+import Button from './components/Button';
+import Calculator from './Calculator';
+import PaperDialog from './components/PaperDialog';
 
 const btnValues = [
-  ["C", "+-", "%", "/"],
-  [7, 8, 9, "X"],
-  [4, 5, 6, "-"],
-  [1, 2, 3, "+"],
-  [0, ".", "="],
+  ['C', '+-', '%', '/'],
+  [7, 8, 9, 'X'],
+  [4, 5, 6, '-'],
+  [1, 2, 3, '+'],
+  [0, '.', '='],
 ];
 
 const calculator = new Calculator();
 
 const App = () => {
   let [calc, setCalc] = useState({
-    sign: "",
+    sign: '',
     num: 0,
     res: 0,
   });
@@ -40,21 +40,21 @@ const App = () => {
     const value = e.target.innerHTML;
 
     switch (btn) {
-      case "C":
+      case 'C':
         handleOpen();
         return calculator.resetClickHandler(calc);
-      case "+-":
+      case '+-':
         return calculator.invertClickHandler(calc);
-      case "%":
+      case '%':
         return calculator.percentClickHandler(calc);
-      case "=":
+      case '=':
         return calculator.equalsClickHandler(calc);
-      case "/":
-      case "X":
-      case "-":
-      case "+":
+      case '/':
+      case 'X':
+      case '-':
+      case '+':
         return await calculator.signClickHandler(calc, value);
-      case ".":
+      case '.':
         return calculator.comaClickHandler(calc, value);
       default:
         return await calculator.numClickHandler(calc, value);
@@ -71,7 +71,7 @@ const App = () => {
             return (
               <Button
                 key={i}
-                className={btn === "=" ? "equals" : ""}
+                className={btn === '=' ? 'equals' : ''}
                 value={btn}
                 onClick={async (e) => setCalc(await calculateProxy(e, btn))}
               />

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export default class Calculator {
   numClickHandler = (calc, value) => {
@@ -7,7 +7,7 @@ export default class Calculator {
         ...calc,
         num:
           this.removeSpaces(calc.num) % 1 === 0 &&
-          !calc.num.toString().includes(".")
+          !calc.num.toString().includes('.')
             ? Number(this.removeSpaces(calc.num + value))
             : calc.num + value,
         res: !calc.sign ? 0 : calc.res,
@@ -26,7 +26,7 @@ export default class Calculator {
         : await this.math(
             Number(this.removeSpaces(calc.res)),
             Number(this.removeSpaces(calc.num)),
-            calc.sign
+            calc.sign,
           ),
       num: 0,
     };
@@ -35,7 +35,7 @@ export default class Calculator {
   comaClickHandler = (calc, value) => {
     return {
       ...calc,
-      num: !calc.num.toString().includes(".") ? calc.num + value : calc.num,
+      num: !calc.num.toString().includes('.') ? calc.num + value : calc.num,
     };
   };
 
@@ -44,14 +44,14 @@ export default class Calculator {
       return {
         ...calc,
         res:
-          calc.num === "0" && calc.sign === "/"
+          calc.num === '0' && calc.sign === '/'
             ? "Can't divide with 0"
             : await this.math(
                 Number(this.removeSpaces(calc.res)),
                 Number(this.removeSpaces(calc.num)),
-                calc.sign
+                calc.sign,
               ),
-        sign: "",
+        sign: '',
         num: 0,
       };
     }
@@ -66,7 +66,7 @@ export default class Calculator {
       ...calc,
       num: calc.num ? this.removeSpaces(calc.num) * -1 : 0,
       res: calc.res ? this.removeSpaces(calc.res) * -1 : 0,
-      sign: "",
+      sign: '',
     };
   };
 
@@ -77,28 +77,28 @@ export default class Calculator {
       ...calc,
       num: (num /= Math.pow(100, 1)),
       res: (res /= Math.pow(100, 1)),
-      sign: "",
+      sign: '',
     };
   };
 
   resetClickHandler = (calc) => {
     return {
       ...calc,
-      sign: "",
+      sign: '',
       num: 0,
       res: 0,
     };
   };
 
-  removeSpaces = (num) => num.toString().replace(/\s/g, "");
+  removeSpaces = (num) => num.toString().replace(/\s/g, '');
 
   // return await axios.get("calc");
   math = async (a, b, sign) => {
-    return sign === "+"
+    return sign === '+'
       ? a + b
-      : sign === "-"
+      : sign === '-'
       ? a - b
-      : sign === "X"
+      : sign === 'X'
       ? a * b
       : a / b;
     // return (await axios.get("http://localhost:3001/calc")).data;
@@ -110,6 +110,6 @@ export default class Calculator {
       b,
       sign,
     };
-    return (await axios.post("http://localhost:3001/calc", data)).data;
+    return (await axios.post('http://localhost:3001/calc', data)).data;
   };
 }
