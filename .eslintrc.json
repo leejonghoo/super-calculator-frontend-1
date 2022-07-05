@@ -5,7 +5,6 @@
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
     "plugin:testing-library/react",
-    "plugin:@typescript-eslint/recommended",
     "react-app",
     "react-app/jest"
   ]
