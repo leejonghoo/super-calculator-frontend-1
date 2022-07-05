@@ -94,13 +94,14 @@ export default class Calculator {
 
   // return await axios.get("calc");
   math = async (a, b, sign) => {
-    return sign === '+'
-      ? a + b
-      : sign === '-'
-      ? a - b
-      : sign === 'X'
-      ? a * b
-      : a / b;
+    // return sign === '+'
+    //   ? a + b
+    //   : sign === '-'
+    //   ? a - b
+    //   : sign === 'X'
+    //   ? a * b
+    //   : a / b;
+    return await this.mathOnRemote(a, b, sign);
   };
 
   mathOnRemote = async (a, b, sign) => {
