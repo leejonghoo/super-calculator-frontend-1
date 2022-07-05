@@ -101,7 +101,6 @@ export default class Calculator {
       : sign === 'X'
       ? a * b
       : a / b;
-    // return (await axios.get("http://localhost:3001/calc")).data;
   };
 
   mathOnRemote = async (a, b, sign) => {
@@ -110,6 +109,6 @@ export default class Calculator {
       b,
       sign,
     };
-    return (await axios.post('http://localhost:3001/calc', data)).data;
+    return (await axios.post('http://localhost:3001/calc', data)).data.result;
   };
 }
