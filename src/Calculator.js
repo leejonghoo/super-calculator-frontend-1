@@ -1,16 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
 
 export default class Calculator {
   numClickHandler = (calc, value) => {
     if (this.removeSpaces(calc.num).length < 16) {
       return {
         ...calc,
-        num:
-          this.removeSpaces(calc.num) % 1 === 0 &&
-          !calc.num.toString().includes(".")
-            ? Number(this.removeSpaces(calc.num + value))
-            : calc.num + value,
-        res: !calc.sign ? 0 : calc.res,
+        num: calc.num.toString() + value.toString(),
+        res: value,
       };
     }
   };
@@ -19,15 +15,7 @@ export default class Calculator {
     return {
       ...calc,
       sign: value,
-      res: !calc.num
-        ? calc.res
-        : !calc.res
-        ? calc.num
-        : await this.math(
-            Number(this.removeSpaces(calc.res)),
-            Number(this.removeSpaces(calc.num)),
-            calc.sign
-          ),
+      res: 0,
       num: 0,
     };
   };
@@ -35,38 +23,31 @@ export default class Calculator {
   comaClickHandler = (calc, value) => {
     return {
       ...calc,
-      num: !calc.num.toString().includes(".") ? calc.num + value : calc.num,
+      num: 0,
     };
   };
 
   equalsClickHandler = async (calc) => {
-    if (calc.sign && calc.num) {
-      return {
-        ...calc,
-        res:
-          calc.num === "0" && calc.sign === "/"
-            ? "Can't divide with 0"
-            : await this.math(
-                Number(this.removeSpaces(calc.res)),
-                Number(this.removeSpaces(calc.num)),
-                calc.sign
-              ),
-        sign: "",
-        num: 0,
-      };
-    }
+    const res = await this.mathOnRemote(
+      Number(calc.res),
+      Number(calc.num),
+      calc.sign,
+    );
 
     return {
       ...calc,
+      res: res,
+      sign: '',
+      num: 0,
     };
   };
 
   invertClickHandler = (calc) => {
     return {
       ...calc,
-      num: calc.num ? this.removeSpaces(calc.num) * -1 : 0,
-      res: calc.res ? this.removeSpaces(calc.res) * -1 : 0,
-      sign: "",
+      num: 0,
+      res: 0,
+      sign: '',
     };
   };
 
@@ -77,32 +58,20 @@ export default class Calculator {
       ...calc,
       num: (num /= Math.pow(100, 1)),
       res: (res /= Math.pow(100, 1)),
-      sign: "",
+      sign: '',
     };
   };
 
   resetClickHandler = (calc) => {
     return {
       ...calc,
-      sign: "",
+      sign: '',
       num: 0,
       res: 0,
     };
   };
 
-  removeSpaces = (num) => num.toString().replace(/\s/g, "");
-
-  // return await axios.get("calc");
-  math = async (a, b, sign) => {
-    return sign === "+"
-      ? a + b
-      : sign === "-"
-      ? a - b
-      : sign === "X"
-      ? a * b
-      : a / b;
-    // return (await axios.get("http://localhost:3001/calc")).data;
-  };
+  removeSpaces = (num) => num.toString().replace(/\s/g, '');
 
   mathOnRemote = async (a, b, sign) => {
     const data = {
@@ -110,6 +79,6 @@ export default class Calculator {
       b,
       sign,
     };
-    return (await axios.post("http://localhost:3001/calc", data)).data;
+    return (await axios.post('http://localhost:3001/calc', data)).data.result;
   };
 }
