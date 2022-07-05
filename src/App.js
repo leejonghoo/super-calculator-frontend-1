@@ -61,6 +61,18 @@ const App = () => {
     }
   };
 
+  const isCommaButtonDisabled = (btn) => {
+    if (btn === '+-' && calc.num === 0) {
+      return true;
+    }
+
+    if (btn === '.' && calc.sign === '.') {
+      return true;
+    }
+
+    return false;
+  };
+
   return (
     <div>
       <PaperDialog dialogOpen={dialogOpen} handleClose={handleClose} />
@@ -73,7 +85,11 @@ const App = () => {
                 key={i}
                 className={btn === '=' ? 'equals' : ''}
                 value={btn}
-                onClick={async (e) => setCalc(await calculateProxy(e, btn))}
+                disabled={isCommaButtonDisabled(btn)}
+                onClick={async (e) => {
+                  const res = await calculateProxy(e, btn);
+                  setCalc(res);
+                }}
               />
             );
           })}

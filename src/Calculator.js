@@ -2,13 +2,15 @@ import axios from 'axios';
 
 export default class Calculator {
   numClickHandler = (calc, value) => {
-    if (this.removeSpaces(calc.num).length < 16) {
+    if (this.removeSpaces(calc.num).length < 10) {
       return {
         ...calc,
-        num: calc.num.toString() + value.toString(),
-        res: value,
+        num: calc.num === 0 ? Number(calc.num + value) : calc.num + value,
+        res: calc.res,
       };
     }
+
+    return calc;
   };
 
   signClickHandler = async (calc, value) => {
@@ -23,7 +25,8 @@ export default class Calculator {
   comaClickHandler = (calc, value) => {
     return {
       ...calc,
-      num: 0,
+      num: value,
+      sign: '.',
     };
   };
 
@@ -45,7 +48,7 @@ export default class Calculator {
   invertClickHandler = (calc) => {
     return {
       ...calc,
-      num: 0,
+      num: calc.num * -1,
       res: 0,
       sign: '',
     };
