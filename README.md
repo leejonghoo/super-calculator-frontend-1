@@ -1,1 +1,1 @@
-![Surge](https://github.com/leejonghoo/super-calculator-frontend/actions/workflows/surge.yml/badge.svg)
+![Surge](https://github.com/leejonghoo/super-calculator-frontend-1/actions/workflows/surge.yml/badge.svg)
