@@ -1,0 +1,28 @@
+name: Deploy to surge
+
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  deploy-to-surge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+      - uses: c-hive/gha-npm-cache@v1
+      - name: npm i
+        run: npm i
+      - name: build
+        run: npm run build
+      - name: Deploy to super-calculator-frontend-100.surge.sh
+        uses: dswistowski/surge-sh-action@v1
+        with:
+          domain: 'super-calculator-frontend-100.surge.sh'
+          project: 'build'
+          login: ${{ secrets.SURGE_EMAIL }}
+          token: ${{ secrets.SURGE_TOKEN }}
